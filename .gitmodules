@@ -1,0 +1,4 @@
+[submodule "linux"]
+	path = linux
+	url = git@github.com:Adirelle/linux.git
+	branch = gnubee/v4.15-adirelle
