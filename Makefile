@@ -13,10 +13,10 @@ KCF := gnubee1_defconfig
 PATH := /opt/cross/bin:$(PATH)
 ARCH := mips
 CROSS_COMPILE := mipsel-unknown-linux-gnu-
-O := O
+O := $(BASEDIR)/build/$(GITREF)
 export PATH ARCH CROSS_COMPILE O
 
-WORKDIR := $(SRCDIR)/$O
+WORKDIR := $O
 
 VMLINUX_PATH := $(WORKDIR)/vmlinux
 UIMAGE_PATH := $(WORKDIR)/arch/mips/boot/uImage 
