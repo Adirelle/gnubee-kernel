@@ -6,7 +6,7 @@ SRCDIR := $(shell readlink -f linux)
 
 GNUBEE := root@192.168.0.1
 TARGET_PATH := GB-PCx_uboot-$(GITREF).bin
-KCF := gnubee1_defconfig
+KCF := ../../../../gnubee1_defconfig
 
 -include Makefile.local
 
