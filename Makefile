@@ -27,7 +27,7 @@ MKINITRAMFS_PATH = $(BASEDIR)/$(MKINITRAMFS_NAME)
 INITRAMFS_NAME = gnubee-initramfs.tgz 
 INITRAMFS_PATH = $(BASEDIR)/$(INITRAMFS_NAME)
 
-INITRAMFS_DIR = $(SRCDIR)/initramfs
+INITRAMFS_DIR = $(WORKDIR)/initramfs
 
 .phony: all clean mrproper defconfig menuconfig
 
@@ -43,6 +43,7 @@ defconfig: $(WORKDIR)/.config
 
 $(WORKDIR)/.config: $(SRCDIR)/arch/mips/configs/$(KCF) | $(WORKDIR)
 	make -C $(SRCDIR) O=$O $(KCF)
+	sed -i -e '/^CONFIG_INITRAMFS_SOURCE/cCONFIG_INITRAMFS_SOURCE="$(INITRAMFS_DIR) $(INITRAMFS_DIR)-files.txt"' $(WORKDIR)/.config
 
 menuconfig: | $(WORKDIR)/.config
 	make -C $(SRCDIR) O=$O menuconfig
@@ -59,7 +60,7 @@ $(INITRAMFS_PATH): $(MKINITRAMFS_PATH)
 	scp $(GNUBEE):$(INITRAMFS_NAME) $@
 
 $(INITRAMFS_DIR)/init: $(INITRAMFS_PATH) | $(INITRAMFS_DIR)
-	tar xzf $(INITRAMFS_PATH) -C $(SRCDIR)
+	tar xzf $(INITRAMFS_PATH) -C $(WORKDIR)
 
 $(INITRAMFS_DIR)/lib/modules: $(VMLINUX_PATH) | $(INITRAMFS_DIR)
 	make -C $(SRCDIR) O=$O INSTALL_MOD_PATH=$(INITRAMFS_DIR) modules_install
