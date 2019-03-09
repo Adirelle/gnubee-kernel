@@ -6,7 +6,7 @@ SRCDIR := $(shell readlink -f linux)
 
 GNUBEE := root@192.168.0.1
 TARGET_PATH := GB-PCx_uboot-$(GITREF).bin
-KCF := ../../../../gnubee1_defconfig
+KCF := ../../../../gnubee1_defconfig.$(GITREF)
 
 -include Makefile.local
 
@@ -42,7 +42,7 @@ mrproper: clean
 defconfig: $(WORKDIR)/.config
 
 $(WORKDIR)/.config: $(SRCDIR)/arch/mips/configs/$(KCF) | $(WORKDIR)
-	make -C $(SRCDIR) O=$O $(KCF)
+	make -C $(SRCDIR) O=$O defconfig
 	sed -i -e '/^CONFIG_INITRAMFS_SOURCE/cCONFIG_INITRAMFS_SOURCE="$(INITRAMFS_DIR) $(INITRAMFS_DIR)-files.txt"' $(WORKDIR)/.config
 
 menuconfig: | $(WORKDIR)/.config
