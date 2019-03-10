@@ -69,13 +69,15 @@ cat > init << "END"
 gnubee_switch_root(){
   echo "Partition GNUBEE-ROOT found. Starting..." > /dev/kmsg
   r=`uname -r`
-  if [ -d /mnt/root/lib/modules/$r ]
-  then : skip
-  else
+#  if [ -d /mnt/root/lib/modules/$r ]
+#  then
+#     echo "Using modules of rootfs" > /dev/kmsg
+#  else
      # ensure modules are available
+     echo "Using modules of initramfs" > /dev/kmsg
      mount -t tmpfs tmpfs /mnt/root/lib/modules
      cp -a /lib/modules/. /mnt/root/lib/modules/
-  fi
+#  fi
 
   # extract MAC address from 'factory' partition
   addr=`dd 2> /dev/null if=/dev/mtd2 bs=1 skip=57344 count=6 | od -t x1 -A none`
@@ -89,7 +91,8 @@ gnubee_boot(){
    mount -t proc none /proc
    mount -t sysfs none /sys
    mount -t devtmpfs devtmpfs /dev
-
+    
+   echo "Preloading modules" > /dev/kmsg
    modprobe ahci
    modprobe xhci_mtk
    modprobe usb_storage
@@ -97,6 +100,8 @@ gnubee_boot(){
    modprobe ext4
    modprobe mtk_sd
    modprobe mmc_block
+
+   echo "Loading other modules" > /dev/kmsg
 
    echo "/sbin/mdev" > /proc/sys/kernel/hotplug
    mdev -s
