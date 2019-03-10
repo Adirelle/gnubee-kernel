@@ -42,7 +42,7 @@ mrproper: clean
 defconfig: $(WORKDIR)/.config
 
 $(WORKDIR)/.config: $(SRCDIR)/arch/mips/configs/$(KCF) | $(WORKDIR)
-	make -C $(SRCDIR) O=$O defconfig
+	cp $< $@
 	sed -i -e '/^CONFIG_INITRAMFS_SOURCE/cCONFIG_INITRAMFS_SOURCE="$(INITRAMFS_DIR) $(INITRAMFS_DIR)-files.txt"' $(WORKDIR)/.config
 
 menuconfig: | $(WORKDIR)/.config
