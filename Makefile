@@ -56,7 +56,7 @@ $(WORKDIR) $(INITRAMFS_DIR):
 	mkdir -p $@
 
 $(VMLINUX_PATH): $(WORKDIR)/.config | $(INITRAMFS_DIR)
-	make -C $(SRCDIR) O=$O -j`nproc`
+	make -C $(SRCDIR) O=$O -j`nproc` vmlinux
 
 $(INITRAMFS_PATH): $(MKINITRAMFS_PATH)
 	scp $< $(GNUBEE):$(MKINITRAMFS_NAME)
